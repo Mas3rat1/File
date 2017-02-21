@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+      <!--Import Google Icon Font-->
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+   <style>
+body {
+  background: #ECECEC;
+}
+#wrap{
+    width:100%;
+    height:100%;
+    background:white;
+    position:relative;
+}
+#uppernav{
+    width:100%;
+    height:7%;
+    /* or 50px */
+    background:#AA1D37;
+    position:fixed;
+    top:0px;
+}
+div.scroll {
+    width: 100%;
+    height: 86%;
+    overflow: scroll;
+}
+.card {
+  /*background:#EEEEEE;*/
+  color: #0A100D;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+
+}
+h1, h3 {
+  font-weight: normal;
+}
+body {margin: 0;}
+ul.navbar {
+width: 100%;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #AA1D37;
+position: fixed;
+bottom: 0;
+}
+ul.navbar li {float: left; width: 20%;}
+ul.navbar li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+ul.navbar li a:hover:not(.active) {background-color: #111;}
+ul.navbar li a.active {background-color: #4CAF50;}
+ul.navbar li.right {float: right;}
+/* TOP BAR */
+ul.topbar {
+width: 100%;
+height: 56px;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #b71c1c;
+    color:white;
+position: fixed;
+z-index:1;
+}
+ul.topbar li {text-align:center;}
+ul.topbar li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+ul.topbar li a:hover:not(.active) {background-color: #111;}
+ul.topbar li a.active {background-color: #b71c1c;}
+ul.topbar li.right {float: right;}
+
+/* SPINNER */
+.spinner {
+  /*margin: 50px;*/
+  margin:auto;
+  height: 56px;
+  width: 56px;
+  animation: rotate 0.8s infinite linear;
+  border: 8px solid #2196f3;
+  border-right-color: transparent;
+  border-radius: 50%;
+}
+
+@keyframes rotate {
+  0%    { transform: rotate(0deg); }
+  100%  { transform: rotate(360deg); }
+}
+
+/*Stuff for the bell schedule pop up */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+</style>
+</head>
+<body>
+<div id="wrap">
+
+<ul class="topbar" style="top:0; bottom: null; position: fixed; display:block;">
+    <li style="text-align:center; width:100%;">
+        <h2 style="text-align:center; margin:0; line-height:56px;">Alerts</h2>
+    </li>
+    <li style="text-align:right; display:block; top:2%; right:0; position: fixed;">
+      <button id="myBtn">Schedule</button>
+      <!-- The Modal -->
+      <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+          <span class="close">&times;</span>
+
+          <div id="pinchzoom">
+            <div>
+              <img id="rect" src="Bell_Schedule_2016-2017.png" alt="Bell Schedule" width="300" height="600" ondragstart="return false" style= "text-align:center;">
+            </div>
+          </div>
+          <script>
+          // Get the modal
+          var modal = document.getElementById('myModal');
+
+          // Get the button that opens the modal
+          var btn = document.getElementById("myBtn");
+
+          // Get the <span> element that closes the modal
+          var span = document.getElementsByClassName("close")[0];
+
+          // When the user clicks the button, open the modal
+          btn.onclick = function() {
+              modal.style.display = "block";
+          }
+
+          // When the user clicks on <span> (x), close the modal
+          span.onclick = function() {
+              modal.style.display = "none";
+          }
+
+          // When the user clicks anywhere outside of the modal, close it
+          window.onclick = function(event) {
+              if (event.target == modal) {
+                  modal.style.display = "none";
+              }
+          }
+          </script>
+        </div>
+
+      </div>
+    </li>
+</ul>
+<br>
+<br>
+<br>
+<div class="scroll">
+<div class="spinner" id="spinner"></div>
+<p id="alerts"> </p>
+
+<br>
+<br>
+
+
+</div>
+
+<nav style="position: fixed; bottom: 0px;">
+    <div class="nav-wrapper red darken-4">
+      <ul class="center-align row" style="line-height:28px;">
+        <li style="width:20%; text-align: center;">
+          <a href="calendar.html">
+            <i class="material-icons" style="margin:0; line-height:40px; height: 28px;">date_range</i>
+            <span> <p style="text-align:center; margin:0; padding:0;"> Events </p></span>
+          </a>
+        </li>
+        <li style="width:20%; text-align: center;">
+          <a href="alerts.html">
+            <i class="material-icons" style="margin:0; line-height:40px; height: 28px;">error_outline</i>
+            <span> <p style="text-align:center; width:100%; padding:0; margin:0;"> Alerts </p></span>
+          </a>
+        </li>
+        <li style="width:20%; text-align: center;">
+          <a href="news.html">
+            <i class="material-icons" style="margin:0; line-height:40px; height: 28px;">ondemand_video</i>
+            <span> <p style="text-align:center; width:100%; padding:0; margin:0;"> News </p></span>
+          </a>
+        </li>
+        <li style="width:20%; text-align: center;">
+          <a href="asb.html">
+            <i class="material-icons" style="margin:0; line-height:40px; height: 28px;">school</i>
+            <span> <p style="text-align:center; width:100%; padding:0; margin:0;"> ASB </p></span>
+          </a>
+        </li>
+        <li style="width:20%; text-align: center;">
+          <a href="settings.html">
+            <i class="material-icons" style="margin:0; line-height:40px; height: 28px;">settings</i>
+            <span> <p style="text-align:center; width:100%; padding:0; margin:0;"> Option </p></span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+</div>
+
+<script>
+// Javascript Goes Here
+// handles the click event for link 1, sends the query
+//http://easyturnin.byethost11.com/hello.php
+//https://crossorigin.me/http://easyturnin.byethost11.com/hello.php
+//http://www.cardinalnewman.org/data/calendar/rsscache/page_602.rss
+      //  function returnwasset(){
+var data;
+var obje;
+var alerts = "";
+$.ajax({
+type: "GET",
+url: "https://spreadsheets.google.com/feeds/list/1QR7Vha2sW8nKjudbnkJMXAXkNPn8LULqq47Td8jrUKY/od6/public/values?alt=json",
+data: data,
+dataType:'jsonp',
+success: function(data) {
+console.log(data);
+                  //alert(obj["feed"]["entry"]["0"]["gsx$alert"]["$t"]);
+for (var item in data["feed"]["entry"]) {
+alerts = alerts +
+    "<div class='card' >" +
+     "<h3 style='margin:0'>" + data["feed"]["entry"][item]["gsx$alert"]["$t"] + "</h3>"
+     + "<h5 style='margin:0'>" +  data["feed"]["entry"][item]["gsx$description"]["$t"] + "</h5>" + "</div>";
+}
+document.getElementById("alerts").innerHTML = alerts;
+var elem = document.getElementById("spinner");
+elem.parentNode.removeChild(elem);
+}
+});
+</script>
+</body>
+</html>
